@@ -20,6 +20,7 @@
  
 var startTime = null;
 var endTime = null;
+var packageMap = null;
  
 var app = {
     initialize: function() {
@@ -58,7 +59,11 @@ var app = {
 
 function goToMap()
 {
+	if (packageMap)
+		packageMap.remove();
+	//$.mobile.loading( 'show', { theme: "b", text: "foo", textonly: true } );
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
+	//alert("SDFSD");
 }
 
 function populateDB(tx){
@@ -78,12 +83,15 @@ function successCB() {
 function onSuccess(position) {
 	var coords = [position.coords.latitude , position.coords.longitude ];
 	L.mapbox.accessToken = 'pk.eyJ1IjoibWFqaWQiLCJhIjoiUC1RNmlDRSJ9.8hveF1kmFd6XeR0S5wokDA';
-	var packageMap = L.mapbox.map('packagemap', 'majid.lh61h6f6').setView(coords, 18);
+	
+
+		packageMap = L.mapbox.map('packagemap', 'majid.lh61h6f6').setView(coords, 18);
+
 	
 	var marker = L.marker(coords, {
 	  icon: L.icon({
-		iconUrl: 'https://www.mapbox.com/maki/renders/embassy-24@2x.png',
-		iconSize: [24, 24],
+		iconUrl: 'http://www.markjmueller.com/wp-content/uploads/2015/03/logo.png',
+		iconSize: [36, 36],
 	  })
 	}).addTo(packageMap);
 	
