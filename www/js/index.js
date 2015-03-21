@@ -17,6 +17,7 @@
  * under the License.
  */
  
+ 
 var startTime = null;
 var endTime = null;
  
@@ -30,6 +31,11 @@ var app = {
     },
 
     onDeviceReady: function() {
+		$(document).on( "pagecontainerbeforeshow", function( event, ui ) {
+			if (ui.toPage[0].id == "two")
+				goToMap();
+		});
+	
 		$("#start-button").click(function(){
 			var sd = $("start-date").val();
 			var st = $("start-time").val();
@@ -44,9 +50,15 @@ var app = {
 			var db = window.openDatabase("lnr", "1.0", "LNR DB", 1000000);
 			db.transaction(populateDB, errorCB, successCB);
 		});
-    },
+		
+	}
 
 };
+
+function goToMap()
+{
+	navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
+}
 
 function populateDB(tx){
 	tx.executeSql('CREATE TABLE IF NOT EXISTS times (types CHARACTER(20), dt DATETIME)');
@@ -60,4 +72,25 @@ function errorCB(err) {
 
 function successCB() {
     alert("success!");
+}
+
+function onSuccess(position) {
+	var coords = [position.coords.latitude , position.coords.longitude ];
+	L.mapbox.accessToken = 'pk.eyJ1IjoibWFqaWQiLCJhIjoiUC1RNmlDRSJ9.8hveF1kmFd6XeR0S5wokDA';
+	var packageMap = L.mapbox.map('packagemap', 'majid.lh61h6f6').setView(coords, 18);
+	
+	var marker = L.marker(coords, {
+	  icon: L.icon({
+		iconUrl: 'https://www.mapbox.com/maki/renders/embassy-24@2x.png',
+		iconSize: [24, 24],
+	  })
+	}).addTo(packageMap);
+	
+}
+
+// onError Callback receives a PositionError object
+//
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
 }

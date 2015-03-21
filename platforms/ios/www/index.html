@@ -26,58 +26,58 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-		<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.min.css" />
-        <title>Hello World</title>
+        <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.min.css" />
+        <title>Last Friday Night</title>
     </head>
     <body>
-	
-		<div data-role="page">
-			<div data-role="header">
-				<h1>Last Night Recorder</h1>
-			</div>
 
-			<div role="main" class="ui-content">
-				<div id="start-panel">
-					<label>Start Time</label>
-					<form>
-						<div class="ui-grid-a">
-							<div class="ui-block-a">
-								<input data-clear-btn="false" name="start-date" id="start-date" value="" type="date">
-							</div>
-							<div class="ui-block-b">
-								<input data-clear-btn="false" name="start-time" id="start-time" value="" type="time">
-							</div>
-						</div>
-					</form>
-					<br/>
-					<label>End Time</label>
-					<form>
-						<div class="ui-grid-a">
-							<div class="ui-block-a">
-								<input data-clear-btn="false" name="end-date" id="end-date" value="" type="date">
-							</div>
-							<div class="ui-block-b">
-								<input data-clear-btn="false" name="end-time" id="end-time" value="" type="time">
-							</div>
-						</div>
-					</form>				
-					<br/>
-					<form>
-						<div class="ui-input-btn ui-btn ui-corner-all ui-shadow">
-							Start!
-							<input data-enhanced="true" value="Start!" type="button" id="start-button">
-						</div>
-					</form>
-				</div>
-			</div>
+        <div data-role="page">
+            <div data-role="header">
+                <h1>Last Night Recorder</h1>
+            </div>
 
-			<div data-role="footer" data-position="fixed">
-				<h4>View Last Record!</h4>
-			</div>
-		</div>
-		
-		<script src="jquery/jquery-1.11.2.min.js"></script>
-		<script src="jquery/jquery.mobile-1.4.5.min.js"></script>
+            <div role="main" class="ui-content">
+                <div id="start-panel">
+                    <label>Start Time</label>
+                    <form>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <input data-clear-btn="false" name="start-date" id="start-date" value="" type="date">
+                            </div>
+                            <div class="ui-block-b">
+                                <input data-clear-btn="false" name="start-time" id="start-time" value="" type="time">
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                    <label>End Time</label>
+                    <form>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <input data-clear-btn="false" name="end-date" id="end-date" value="" type="date">
+                            </div>
+                            <div class="ui-block-b">
+                                <input data-clear-btn="false" name="end-time" id="end-time" value="" type="time">
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                    <form>
+                        <div class="ui-input-btn ui-btn ui-corner-all ui-shadow">
+                            Start!
+                            <input data-enhanced="true" value="Start!" type="button" id="start-button">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <h4>Where Was I?</h4>
+            </div>
+        </div>
+
+        <script src="jquery/jquery-1.11.2.min.js"></script>
+        <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
