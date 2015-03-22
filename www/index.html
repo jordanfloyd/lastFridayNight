@@ -26,80 +26,102 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-		<link rel="stylesheet" href="themes/lastFridayNight.min.css" />
+        <link rel="stylesheet" href="themes/lastFridayNight.min.css" />
         <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-		<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.css' rel='stylesheet' />
-        <title>Hello World</title>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+        <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.css' rel='stylesheet' />
+        <title>Last Friday Night</title>
     </head>
     <body>
-	
-		<div data-role="page" id="one">
-			<div data-role="header" class="ui-header">
-				<h1>Last Night Recorder</h1>
-			</div>
 
-			<div role="main" class="ui-content">
-				<div id="start-panel">
-					<label>Start Time</label>
-					<form>
-						<div class="ui-grid-a">
-							<div class="ui-block-a">
-								<input data-clear-btn="false" name="start-date" id="start-date" value="" type="date">
-							</div>
-							<div class="ui-block-b">
-								<input data-clear-btn="false" name="start-time" id="start-time" value="" type="time">
-							</div>
-						</div>
-					</form>
-					<br/>
-					<label>End Time</label>
-					<form>
-						<div class="ui-grid-a">
-							<div class="ui-block-a">
-								<input data-clear-btn="false" name="end-date" id="end-date" value="" type="date">
-							</div>
-							<div class="ui-block-b">
-								<input data-clear-btn="false" name="end-time" id="end-time" value="" type="time">
-							</div>
-						</div>
-					</form>				
-					<br/>
-					<form>
-						<div class="ui-input-btn ui-btn ui-corner-all ui-shadow">
-							Start!
-							<input data-enhanced="true" value="Start!" type="button" id="start-button">
-						</div>
-					</form>
-				</div>
-			</div>
+    <div data-role="page" id="splash">
+        <div class="splash">
+            <img src="img/logo-lg.png" alt="Last Friday Night" />
 
-			<div data-role="footer" data-position="fixed">
-				<h4><a href="#two" data-transition="slide">View Last Record!</a></h4>
-			</div>
-		</div>
-		
-		<div data-role="page" id="two">
-			<div data-role="header">
-					<h1>Last Night Recorder</h1> 
-			</div>
+            <script type='text/javascript'>
+                //<![CDATA[
+                $(window).load(function () {
+                    $(function () {
+                        setTimeout(hideSplash, 4000);
+                    });
 
-			<div role="main" class="ui-content" id="packagemap" stype="height:600px;">
-			</div>
+                    function hideSplash() {
+                        $.mobile.changePage("#one", "fade");
+                    }
 
-			
-			<div data-role="footer" data-position="fixed" >
-				<h1><a href="#one" data-transition="slide" data-direction="reverse">Back!</a></h1>
-			</div>
-		</div>
-		
-		<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.js'></script>
-		<script src="jquery/jquery-1.11.2.min.js"></script>
-		<script src="jquery/jquery.mobile-1.4.5.min.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+
+                }); //]]>
+            </script>
+
+        </div>
+    </div>
+
+    <div data-role="page" id="one">
+        <div data-role="header" class="ui-header">
+            <h1>Last Friday Night</h1>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div id="start-panel">
+                <label>Start Time</label>
+                <form>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <input data-clear-btn="false" name="start-date" id="start-date" value="" type="date">
+                        </div>
+                        <div class="ui-block-b">
+                            <input data-clear-btn="false" name="start-time" id="start-time" value="" type="time">
+                        </div>
+                    </div>
+                </form>
+                <br/>
+                <label>End Time</label>
+                <form>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <input data-clear-btn="false" name="end-date" id="end-date" value="" type="date">
+                        </div>
+                        <div class="ui-block-b">
+                            <input data-clear-btn="false" name="end-time" id="end-time" value="" type="time">
+                        </div>
+                    </div>
+                </form>
+                <br/>
+                <form>
+                    <div class="ui-input-btn ui-btn ui-corner-all ui-shadow">
+                        Start!
+                        <input data-enhanced="true" value="Start!" type="button" id="start-button">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div data-role="footer" data-position="fixed" class="ui-input-btn ui-btn ui-corner-all ui-shadow">
+            <h4><a href="#two" data-transition="slide">Where Was I?</a></h4>
+        </div>
+    </div>
+
+    <div data-role="page" id="two">
+        <div data-role="header">
+            <h1>Last Friday Night</h1>
+        </div>
+
+        <div role="main" class="ui-content" id="packagemap" stype="height:600px;">
+        </div>
+
+
+        <div data-role="footer" data-position="fixed" class="ui-input-btn ui-btn ui-corner-all ui-shadow">
+            <h1><a href="#one" data-transition="slide" data-direction="reverse">&lt; Back</a></h1>
+        </div>
+    </div>
+
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.js'></script>
+    <script src="jquery/jquery-1.11.2.min.js"></script>
+    <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
 </html>
