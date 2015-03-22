@@ -18,9 +18,17 @@
  */
  
  
-var startTime = null;
-var endTime = null;
 var packageMap = null;
+var records = [];
+var currentRecord = 0;
+var displayRecordsInterval = null;
+
+var db = null;
+var lat = null;
+var _long = null;
+var currentTime = null;
+
+var collectPositionInterval = null;
  
 var app = {
     initialize: function() {
@@ -39,18 +47,18 @@ var app = {
 		});
 	
 		$("#start-button").click(function(){
-			var sd = $("start-date").val();
-			var st = $("start-time").val();
-			var ed = $("end-date").val();
-			var et = $("end-time").val();
-			
-			if (!sd || !st || !ed || !et)
-				return;
-				
-			startTime = sd + ' ' + st;	
-			endTime = ed + ' ' + et;
-			var db = window.openDatabase("lnr", "1.0", "LNR DB", 1000000);
-			db.transaction(populateDB, errorCB, successCB);
+			$("#start-panel").hide();
+			initDB();
+			db.transaction(createDB, errorCB, successCB);
+			collectPosition();
+			collectPositionInterval = window.setInterval(collectPosition, 5000);
+			$("#stop-panel").show();
+		});
+		
+		$("#stop-button").click(function(){
+			$("#stop-panel").hide();
+			clearInterval(collectPositionInterval);
+			$("#start-panel").show();
 		});
 		
 	}
@@ -61,46 +69,66 @@ function goToMap()
 {
 	if (packageMap)
 		packageMap.remove();
-	//$.mobile.loading( 'show', { theme: "b", text: "foo", textonly: true } );
-	navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
-	//alert("SDFSD");
+		
+	initDB();
+	db.transaction(readFromDB, errorCB, successCB);
 }
 
-function populateDB(tx){
-	tx.executeSql('CREATE TABLE IF NOT EXISTS times (types CHARACTER(20), dt DATETIME)');
-	tx.executeSql("INSERT INTO times (types, dt) VALUES ('start', '" + startTime + "')");
-	tx.executeSql("INSERT INTO times (types, dt) VALUES ('start', '" + endTime + "')");
+function readFromDB(tx){
+	tx.executeSql('SELECT * FROM locations; ', [], readRecords, errorCB);
 }
 
-function errorCB(err) {
-    alert("Error processing SQL: "+err.code);
-}
-
-function successCB() {
-    alert("success!");
-}
-
-function onSuccess(position) {
-	var coords = [position.coords.latitude , position.coords.longitude ];
+function readRecords(tx, results){
+    var len = results.rows.length;
+	records= [];
+    console.log("DEMO table: " + len + " rows found.");
+    for (var i=0; i<len; i++){
+		records.push({
+			lat: results.rows.item(i).lat,
+			lon: results.rows.item(i).lon,
+			time: results.rows.item(i).current_time
+		});	
+    }
+	
+	if(records.length == 0)
+		return;	
+	
 	L.mapbox.accessToken = 'pk.eyJ1IjoibWFqaWQiLCJhIjoiUC1RNmlDRSJ9.8hveF1kmFd6XeR0S5wokDA';
-	
+	packageMap = L.mapbox.map('packagemap', 'majid.lh61h6f6');
+	currentRecord = 0;
+	displayRecordsInterval = window.setInterval(updateMap, 3000);
+}
 
-		packageMap = L.mapbox.map('packagemap', 'majid.lh61h6f6').setView(coords, 18);
-
+function updateMap() {	
+	if (currentRecord == records.length){
+		clearInterval(displayRecordsInterval);
+		return;
+	}		
 	
-	var marker = L.marker(coords, {
+	packageMap.setView([records[currentRecord].lat, records[currentRecord].lon], 18);
+	
+	var marker = L.marker([records[currentRecord].lat, records[currentRecord].lon], {
 	  icon: L.icon({
 		iconUrl: 'http://www.markjmueller.com/wp-content/uploads/2015/03/logo.png',
 		iconSize: [36, 36],
 	  })
 	}).addTo(packageMap);
 	
+	currentRecord++;
+}
+
+function errorCB(err) {
+    console.log("Error processing SQL: "+err.code);
+}
+
+function successCB() {
+    console.log("success!");
 }
 
 // onError Callback receives a PositionError object
 //
 function onError(error) {
-    alert('code: '    + error.code    + '\n' +
+    console.log('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
 }
 
@@ -111,4 +139,31 @@ function resizeContentPanel(){
 		contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height(),
 		content = screen - header - footer - contentCurrent;
 	$(".ui-content").height(content);
+}
+
+function initDB() {
+	if (db) return
+	db = window.openDatabase("lnr", "1.0", "LNR DB", 1000000);
+}
+
+function collectPosition() {
+	initDB();
+	navigator.geolocation.getCurrentPosition(writePosition, onError, { timeout: 30000 });
+}
+
+function createDB(tx){
+	tx.executeSql('DROP TABLE IF EXISTS locations;');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS locations (lat REAL, lon REAL, current_time DATETIME);');
+}
+
+function writePosition(position) {
+	lat = position.coords.latitude, 
+	_long = position.coords.longitude; 
+	var time = new Date();
+	currentTime = new moment().format("YYYY-MM-DD HH:mm:ss");
+	db.transaction(writePositionToDB, successCB, errorCB);
+}
+
+function writePositionToDB(tx) {
+	tx.executeSql("INSERT INTO locations (lat, lon, current_time) VALUES (" + lat + ", " + _long + ", '" + currentTime + "' )");
 }

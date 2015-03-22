@@ -3071,7 +3071,7 @@ fieldset.ui-controlgroup {
     margin: 0;
 }
 .ui-dialog-contain > .ui-header {
-    overflow: none;
+    overflow: hidden;
     z-index: 10;
     padding: 0;
     border-top-width: 0;
@@ -4714,3 +4714,5 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
     position: relative;/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
     padding: .2em;
 }
+
+
