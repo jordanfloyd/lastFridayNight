@@ -18,6 +18,7 @@
  */
  
  
+<<<<<<< Updated upstream
 var packageMap = null;
 var records = [];
 var currentRecord = 0;
@@ -29,6 +30,11 @@ var _long = null;
 var currentTime = null;
 
 var collectPositionInterval = null;
+=======
+var startTime = null;
+var endTime = null;
+var packageMap = null;
+>>>>>>> Stashed changes
  
 var app = {
     initialize: function() {
@@ -69,9 +75,21 @@ function goToMap()
 {
 	if (packageMap)
 		packageMap.remove();
+<<<<<<< Updated upstream
 		
 	initDB();
 	db.transaction(readFromDB, errorCB, successCB);
+=======
+	//$.mobile.loading( 'show', { theme: "b", text: "foo", textonly: true } );
+	navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
+	//alert("SDFSD");
+}
+
+function populateDB(tx){
+	tx.executeSql('CREATE TABLE IF NOT EXISTS times (types CHARACTER(20), dt DATETIME)');
+	tx.executeSql("INSERT INTO times (types, dt) VALUES ('start', '" + startTime + "')");
+	tx.executeSql("INSERT INTO times (types, dt) VALUES ('start', '" + endTime + "')");
+>>>>>>> Stashed changes
 }
 
 function readFromDB(tx){
@@ -99,6 +117,7 @@ function readRecords(tx, results){
 	displayRecordsInterval = window.setInterval(updateMap, 3000);
 }
 
+<<<<<<< Updated upstream
 function updateMap() {	
 	if (currentRecord == records.length){
 		clearInterval(displayRecordsInterval);
@@ -106,6 +125,15 @@ function updateMap() {
 	}		
 	
 	packageMap.setView([records[currentRecord].lat, records[currentRecord].lon], 18);
+=======
+function onSuccess(position) {
+	var coords = [position.coords.latitude , position.coords.longitude ];
+	L.mapbox.accessToken = 'pk.eyJ1IjoibWFqaWQiLCJhIjoiUC1RNmlDRSJ9.8hveF1kmFd6XeR0S5wokDA';
+	
+
+		packageMap = L.mapbox.map('packagemap', 'majid.lh61h6f6').setView(coords, 18);
+
+>>>>>>> Stashed changes
 	
 	var marker = L.marker([records[currentRecord].lat, records[currentRecord].lon], {
 	  icon: L.icon({
